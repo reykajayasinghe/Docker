@@ -1,5 +1,6 @@
 FROM debian:stretch
 #LABEL maintainer="reyka@wustl.edu"
+
 #Originally from:lbwang/dailybox
 #LABEL maintainer="liang-bo.wang@wustl.edu"
 
@@ -50,29 +51,12 @@ RUN wget --quiet https://repo.continuum.io/miniconda/Miniconda3-4.3.31-Linux-x86
     rm $HOME/miniconda.sh
 
 # Fish shell setting
-RUN git clone https://github.com/ccwang002/dotfiles.git $HOME/dotfiles && \
+RUN git clone https://github.com/fish-shell/fish-shell.git $HOME/dotfiles && \
     cd $HOME/dotfiles && \
     /opt/conda/bin/python3 ./dotfile_setup.py \
         --only "~/.inputrc" --only "~/.editrc" --only "~/.tmux.conf" && \
     rm -rf /root/.cache
 
-# Ripgrep, exa, and fd
-RUN wget --quiet https://github.com/BurntSushi/ripgrep/releases/download/0.7.1/ripgrep-0.7.1-x86_64-unknown-linux-musl.tar.gz -O $HOME/ripgrep.tar.gz && \
-    cd $HOME && tar xf $HOME/ripgrep.tar.gz && \
-    cd `find $HOME -type d -name "ripgrep*"` && \
-    mkdir -p /usr/local/share/man/man1 && cp rg.1 /usr/local/share/man/man1/ && \
-    cp rg /usr/local/bin/ && \
-    rm -rf $HOME/ripgrep* && \
-    \
-    wget --quiet https://storage.googleapis.com/dinglab/lbwang/tools/exa/v0.8.0_linux_musl/exa -O /usr/local/bin/exa && \
-    wget --quiet https://storage.googleapis.com/dinglab/lbwang/tools/exa/v0.8.0_linux_musl/exa.1 -O /usr/local/share/man/man1/exa.1 && \
-    wget --quiet https://storage.googleapis.com/dinglab/lbwang/tools/exa/v0.8.0_linux_musl/completions.fish -O /usr/share/fish/vendor_completions.d/exa.fish && \
-    chmod 755 /usr/local/bin/exa && \
-    \
-    wget --quiet https://github.com/sharkdp/fd/releases/download/v6.2.0/fd-v6.2.0-x86_64-unknown-linux-musl.tar.gz -O $HOME/fd.tar.gz && \
-    cd $HOME && tar xf $HOME/fd.tar.gz && \
-    cd `find $HOME -type d -name "fd*"` && \
-    cp fd /usr/local/bin/ && \
-    cp autocomplete/fd.fish /usr/share/fish/vendor_completions.d/ && \
-    cp fd.1 /usr/local/share/man/man1/ && \
-    rm -rf $HOME/fd*
+#Cross Map
+RUN conda install crossmap
+
