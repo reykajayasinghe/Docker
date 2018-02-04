@@ -60,3 +60,10 @@ RUN git clone https://github.com/fish-shell/fish-shell.git $HOME/dotfiles && \
 #Cross Map
 RUN conda install crossmap
 
+#bam-readcount
+RUN conda install bam-readcount
+
+#Install python 3.6
+RUN conda create -n py36 python=3.6 anaconda
+
+RUN source activate py36
